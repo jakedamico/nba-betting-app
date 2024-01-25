@@ -12,22 +12,24 @@ def get_todays_nba_games():
     f = "{gameId}: {awayTeam} vs. {homeTeam} @ {gameTimeLTZ}" 
 
     try:
-        board = scoreboard.ScoreBoard()
-        print("ScoreBoardDate: " + board.score_board_date)
-        games = board.games.get_dict()
-        for game in games:
-            gameTimeLTZ = parser.parse(game["gameTimeUTC"]).replace(tzinfo=timezone.utc).astimezone(tz=None)
-            game_info = {
-                "gameId": game['gameId'],
-                "awayTeam": game['awayTeam']['teamName'],
-                "homeTeam": game['homeTeam']['teamName'],
-                "gameTimeLTZ": gameTimeLTZ,
-                "gameStatusText": game['gameStatusText'],
-                "gameClock": game['gameClock'],
-                "currentQuarter": game['period']
-            }
-            todays_games_list.append(game_info)
-            print(f.format(**game_info))
+      board = scoreboard.ScoreBoard()
+      print("ScoreBoardDate: " + board.score_board_date)
+      games = board.games.get_dict()
+      for game in games:
+         gameTimeLTZ = parser.parse(game["gameTimeUTC"]).replace(tzinfo=timezone.utc).astimezone(tz=None)
+         game_info = {
+            "gameId": game['gameId'],
+            "awayTeam": game['awayTeam']['teamName'],
+            "homeTeam": game['homeTeam']['teamName'],
+            "gameTimeLTZ": gameTimeLTZ,
+            "gameStatusText": game['gameStatusText'],
+            "gameClock": game['gameClock'],
+            "currentQuarter": game['period'],
+            "homeTeamScore": game['homeTeam']['score'],
+            "awayTeamScore": game['awayTeam']['score']
+         }
+         todays_games_list.append(game_info)
+         print(f.format(**game_info))
     except Exception as e:
         print(f"An error occurred: {e}")
         return []
